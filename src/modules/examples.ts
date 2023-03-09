@@ -26,7 +26,7 @@ export class BasicExampleFactory {
       notify: async (
         event: string,
         type: string,
-        ids: Array<string>,
+        ids: Array<string> | Array<number>,
         extraData: { [key: string]: any }
       ) => {
         if (!addon?.data.alive) {

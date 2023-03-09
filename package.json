@@ -1,14 +1,14 @@
 {
-  "name": "zotero-addon-template",
-  "version": "0.1.5",
-  "description": "Zotero Addon Template",
+  "name": "zotero-abbreviation",
+  "version": "0.1.0",
+  "description": "Display abbreviation on main pane for conferences and journals",
   "config": {
-    "addonName": "Zotero Addon Template",
-    "addonID": "addontemplate@euclpts.com",
-    "addonRef": "addontemplate",
-    "addonInstance": "AddonTemplate",
-    "releasepage": "https://github.com/windingwind/zotero-addon-template/releases/latest/download/zotero-addon-template.xpi",
-    "updaterdf": "https://raw.githubusercontent.com/windingwind/zotero-addon-template/bootstrap/update.json"
+    "addonName": "Zotero-Abbreviation",
+    "addonID": "lzhmarkk@163.com",
+    "addonRef": "ZoteroAbbrev",
+    "addonInstance": "ZoteroAbbrev",
+    "releasepage": "https://github.com/lzhmarkk/zotero-abbreviation/releases/latest/download/zotero-abbreviation.xpi",
+    "updaterdf": "https://raw.githubusercontent.com/lzhmarkk/zotero-abbreviation/bootstrap/update.json"
   },
   "main": "src/index.ts",
   "scripts": {
@@ -28,14 +28,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/windingwind/zotero-addon-template.git"
+    "url": "git+https://github.com/lzhmarkk/zotero-abbreviation.git"
   },
-  "author": "windingwind",
+  "author": "lzhmarkk",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/windingwind/zotero-addon-template/issues"
+    "url": "https://github.com/lzhmarkk/zotero-abbreviation/issues"
   },
-  "homepage": "https://github.com/windingwind/zotero-addon-template#readme",
+  "homepage": "https://github.com/lzhmarkk/zotero-abbreviation#readme",
   "dependencies": {
     "zotero-plugin-toolkit": "^2.0.1"
   },
