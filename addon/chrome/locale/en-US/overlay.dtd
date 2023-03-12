@@ -1,7 +1,11 @@
-<!ENTITY zotero.__addonRef__.pref.title "Addon Template Example">
+<!ENTITY zotero.__addonRef__.pref.title "Customize abbreviation rules">
 <!ENTITY zotero.__addonRef__.itemmenu.test.label "addon template">
+<!ENTITY zotero.__addonRef__.pref.full.label "Full name">
+<!ENTITY zotero.__addonRef__.pref.abbr.label "Abbreviation">
 <!ENTITY zotero.__addonRef__.pref.enable.label "Enable">
 <!ENTITY zotero.__addonRef__.pref.input.label "Input">
+<!ENTITY zotero.__addonRef__.pref.addRule.label "Add Rule">
+<!ENTITY zotero.__addonRef__.pref.removeRule.label "Remove Rule">
 
 <!ENTITY zotero.__addonRef__.help.version.label "__addonName__ VERSION __buildVersion__">
 <!ENTITY zotero.__addonRef__.help.releasetime.label "Build __buildTime__">

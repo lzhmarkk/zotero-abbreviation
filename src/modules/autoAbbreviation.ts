@@ -40,6 +40,17 @@ export class UIExampleFactory {
             }
         );
     }
+    static registerPrefs() {
+        const prefOptions = {
+            pluginID: config.addonID,
+            src: rootURI + "chrome/content/preferences.xhtml",
+            label: getString("prefs.title"),
+            image: `chrome://${config.addonRef}/content/icons/favicon@0.5x.png`,
+            extraDTD: [`chrome://${config.addonRef}/locale/overlay.dtd`],
+            defaultXUL: true,
+        };
+        ztoolkit.PreferencePane.register(prefOptions);
+    }
 }
 
 
@@ -69,28 +80,10 @@ function update_publish_abbreviation(
 }
 
 function get_publish_abbreviation(full_name: String) {
-    const abbreviations = [
-        ["Neural Information Processing Systems", "NIPS"],
-        ["ACM Web Conference", "WWW"],
-        ["Joint Conference on Artificial Intelligence", "IJCAI"],
-        ["Transactions on Intelligent Transportation Systems", "TITS"],
-        ["Conference on Machine Learning", "ICML"],
-        ["SIGKDD", "KDD"],
-        ["AAAI", "AAAI"],
-        ["Knowledge-Based Systems", "KBS"],
-        ["Transactions on Knowledge and Data Engineering", "TKDE"],
-        ["Conference on Learning Representations", "ICLR"],
-        ["Conference for Learning Representations", "ICLR"],
-        ["SIGIR", "SIGIR"],
-        ["Conference on Recommender Systems", "RecSys"],
-        ["IEEE Access", "Access"],
-        ["Conference on Information & Knowledge Management", "CIKM"],
-        ["International Conference on Data Engineering", "ICDE"],
-        ["Transactions on Intelligent Systems and Technology", "TIST"]
-    ]
-    const _abb = abbreviations.filter((t) => full_name.toLowerCase().includes(t[0].toLowerCase()))
-    if (_abb.length > 0) {
-        return String(_abb[0][1])
+    const rules = addon.data.prefs?.rows
+    const _abb = rules?.filter((t) => full_name.toLowerCase().includes(t.full.toLowerCase()))
+    if (!!_abb && _abb.length > 0) {
+        return String(_abb[0].abbr)
     } else {
         return String("")
     }

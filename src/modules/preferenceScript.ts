@@ -9,30 +9,37 @@ export function registerPrefsScripts(_window: Window) {
       window: _window,
       columns: [
         {
-          dataKey: "title",
-          label: "prefs.table.title",
-          fixedWidth: true,
-          width: 100,
+          dataKey: "full",
+          label: "prefs.table.full",
         },
         {
-          dataKey: "detail",
-          label: "prefs.table.detail",
+          dataKey: "abbr",
+          label: "prefs.table.abbr",
         },
       ],
       rows: [
         {
-          title: "Orange",
-          detail: "It's juicy",
+          full: "Neural Information Processing Systems",
+          abbr: "NeurIPS"
         },
         {
-          title: "Banana",
-          detail: "It's sweet",
+          full: "ACM Web Conference",
+          abbr: "WWW"
         },
         {
-          title: "Apple",
-          detail: "I mean the fruit APPLE",
+          full: "SIGKDD",
+          abbr: "KDD"
         },
+        {
+          full: "AAAI",
+          abbr: "AAAI"
+        },
+        {
+          full: "Joint Conference on Artificial Intelligence",
+          abbr: "IJCAI"
+        }
       ],
+      buffer: {}
     };
   } else {
     addon.data.prefs.window = _window;
@@ -67,21 +74,21 @@ async function updatePrefsUI() {
       "getRowData",
       (index) =>
         addon.data.prefs?.rows[index] || {
-          title: "no data",
-          detail: "no data",
+          full: "no data",
+          abbr: "no data",
         }
     )
     // Show a progress window when selection changes
     .setProp("onSelectionChange", (selection) => {
-      new ztoolkit.ProgressWindow(config.addonName)
-        .createLine({
-          text: `Selected line: ${addon.data.prefs?.rows
-            .filter((v, i) => selection.isSelected(i))
-            .map((row) => row.title)
-            .join(",")}`,
-          progress: 100,
-        })
-        .show();
+      // new ztoolkit.ProgressWindow(config.addonName)
+      //   .createLine({
+      //     text: `Selected line: ${addon.data.prefs?.rows
+      //       .filter((v, i) => selection.isSelected(i))
+      //       .map((row) => row.abbr)
+      //       .join(",")}`,
+      //     progress: 100,
+      //   })
+      //   .show();
     })
     // When pressing delete, delete selected line and refresh table.
     // Returning false to prevent default event.
@@ -99,36 +106,49 @@ async function updatePrefsUI() {
     // For find-as-you-type
     .setProp(
       "getRowString",
-      (index) => addon.data.prefs?.rows[index].title || ""
+      (index) => addon.data.prefs?.rows[index].abbr || ""
     )
     // Render the table.
     .render(-1, () => {
       renderLock.resolve();
     });
+  addon.data.prefs!.table = tableHelper;
   await renderLock.promise;
   ztoolkit.log("Preference table rendered!");
 }
 
 function bindPrefEvents() {
-  addon.data
-    .prefs!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-enable`
-    )
-    ?.addEventListener("command", (e) => {
-      ztoolkit.log(e);
-      addon.data.prefs!.window.alert(
-        `Successfully changed to ${(e.target as XUL.Checkbox).checked}!`
-      );
-    });
+    addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-addRule`)
+      ?.addEventListener("click", (e) => {
+        const fullInput = addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
+        const abbrInput = addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
+        const full = (fullInput as HTMLInputElement).value;
+        const abbr = (abbrInput as HTMLInputElement).value;
 
-  addon.data
-    .prefs!!.window.document.querySelector(
-      `#zotero-prefpane-${config.addonRef}-input`
-    )
-    ?.addEventListener("change", (e) => {
-      ztoolkit.log(e);
-      addon.data.prefs!.window.alert(
-        `Successfully changed to ${(e.target as HTMLInputElement).value}!`
-      );
-    });
+        if(!full||!abbr){
+            addon.data.prefs!.window.alert(getString("prefs.table.warn"));
+            return false;
+        }
+
+        const rule = {
+                full: full,
+                abbr: abbr
+            };
+          addon.data.prefs!.rows.push(rule);
+          addon.data.prefs!.table?.render();
+          return false;
+      });
+
+    addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-removeRule`)
+        ?.addEventListener("click", (e) => {
+            const table = addon.data.prefs!.table;
+            if(!!table) {
+                addon.data.prefs!.rows =
+                    addon.data.prefs?.rows.filter(
+                        (v, i) => !table.treeInstance.selection.isSelected(i)
+                    ) || [];
+                table.render();
+            }
+            return false;
+        });
 }

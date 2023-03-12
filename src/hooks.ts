@@ -71,6 +71,8 @@ async function onStartup() {
 
   await UIExampleFactory.registerRightClickUpdateAbbreviation();
 
+  UIExampleFactory.registerPrefs();
+
   await Zotero.Promise.delay(1000);
 
   popupWin.changeLine({
