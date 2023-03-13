@@ -1,5 +1,6 @@
 import { config } from "../../package.json";
 import { getString } from "./locale";
+import {add_rule,del_rule} from "./rules";
 
 export function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -134,7 +135,8 @@ function bindPrefEvents() {
                 full: full,
                 abbr: abbr
             };
-          addon.data.prefs!.rows.push(rule);
+        add_rule(rule);
+
           addon.data.prefs!.table?.render();
           return false;
       });
@@ -143,10 +145,10 @@ function bindPrefEvents() {
         ?.addEventListener("click", (e) => {
             const table = addon.data.prefs!.table;
             if(!!table) {
-                addon.data.prefs!.rows =
-                    addon.data.prefs?.rows.filter(
+                 const rules=addon.data.prefs?.rows.filter(
                         (v, i) => !table.treeInstance.selection.isSelected(i)
                     ) || [];
+                 del_rule(rules);
                 table.render();
             }
             return false;
