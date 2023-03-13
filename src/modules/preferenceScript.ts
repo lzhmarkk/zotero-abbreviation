@@ -1,8 +1,8 @@
 import { config } from "../../package.json";
 import { getString } from "./locale";
-import {add_rule,del_rule} from "./rules";
+import {load_rules, add_rule,del_rule} from "./rules";
 
-export function registerPrefsScripts(_window: Window) {
+export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
   // See addon/chrome/content/preferences.xul onpaneload
   if (!addon.data.prefs) {
@@ -18,28 +18,7 @@ export function registerPrefsScripts(_window: Window) {
           label: "prefs.table.abbr",
         },
       ],
-      rows: [
-        {
-          full: "Neural Information Processing Systems",
-          abbr: "NeurIPS"
-        },
-        {
-          full: "ACM Web Conference",
-          abbr: "WWW"
-        },
-        {
-          full: "SIGKDD",
-          abbr: "KDD"
-        },
-        {
-          full: "AAAI",
-          abbr: "AAAI"
-        },
-        {
-          full: "Joint Conference on Artificial Intelligence",
-          abbr: "IJCAI"
-        }
-      ],
+      rows: await load_rules(),
       buffer: {}
     };
   } else {

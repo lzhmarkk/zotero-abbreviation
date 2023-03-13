@@ -123,7 +123,7 @@ async function onNotify(
 async function onPrefsEvent(type: string, data: { [key: string]: any }) {
   switch (type) {
     case "load":
-      registerPrefsScripts(data.window);
+      await registerPrefsScripts(data.window);
       break;
     default:
       return;
