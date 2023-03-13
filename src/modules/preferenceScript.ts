@@ -121,10 +121,10 @@ async function updatePrefsUI() {
 function bindPrefEvents() {
     addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-addRule`)
       ?.addEventListener("click", (e) => {
-        const fullInput = addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
-        const abbrInput = addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
-        const full = (fullInput as HTMLInputElement).value;
-        const abbr = (abbrInput as HTMLInputElement).value;
+        const fullInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
+        const abbrInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
+        const full = fullInput.value;
+        const abbr = abbrInput.value;
 
         if(!full||!abbr){
             addon.data.prefs!.window.alert(getString("prefs.table.warn"));
@@ -136,7 +136,8 @@ function bindPrefEvents() {
                 abbr: abbr
             };
         add_rule(rule);
-
+          fullInput.value = "";
+          abbrInput.value = "";
           addon.data.prefs!.table?.render();
           return false;
       });
