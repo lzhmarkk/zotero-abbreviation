@@ -6,6 +6,7 @@
 <!ENTITY zotero.__addonRef__.pref.input.label "输入">
 <!ENTITY zotero.__addonRef__.pref.addRule.label "添加规则">
 <!ENTITY zotero.__addonRef__.pref.removeRule.label "删除规则">
+<!ENTITY zotero.__addonRef__.pref.resetRule.label "重置规则!!">
 
 <!ENTITY zotero.__addonRef__.help.version.label "__addonName__ 版本 __buildVersion__">
 <!ENTITY zotero.__addonRef__.help.releasetime.label "Build __buildTime__">

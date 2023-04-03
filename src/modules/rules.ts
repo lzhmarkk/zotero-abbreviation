@@ -25,6 +25,13 @@ export function del_rule(rules: { [dataKey: string]: string; }[]) {
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
 }
 
+export async function reset_rules() {
+    ztoolkit.log("reset rules to defaults from file")
+    const default_rules = await default_rules_list()
+    addon.data.prefs!.rows = default_rules;
+    Zotero.Prefs.set("zoteroabbr.rules", JSON.stringify(default_rules))
+    return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
+}
 
 export async function default_rules_list() {
     const uri = rootURI + "chrome/content/default_rules.csv";

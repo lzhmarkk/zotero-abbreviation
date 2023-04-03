@@ -1,6 +1,6 @@
 import { config } from "../../package.json";
 import { getString } from "./locale";
-import {load_rules, add_rule,del_rule} from "./rules";
+import {load_rules, add_rule, del_rule, reset_rules} from "./rules";
 
 export async function registerPrefsScripts(_window: Window) {
   // This function is called when the prefs window is opened
@@ -129,6 +129,16 @@ function bindPrefEvents() {
                         (v, i) => !table.treeInstance.selection.isSelected(i)
                     ) || [];
                  del_rule(rules);
+                table.render();
+            }
+            return false;
+        });
+
+    addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-resetRule`)
+        ?.addEventListener("click", (e) => {
+            const table = addon.data.prefs!.table;
+            if(!!table){
+                reset_rules();
                 table.render();
             }
             return false;

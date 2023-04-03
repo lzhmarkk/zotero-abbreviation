@@ -6,6 +6,7 @@
 <!ENTITY zotero.__addonRef__.pref.input.label "Input">
 <!ENTITY zotero.__addonRef__.pref.addRule.label "Add Rule">
 <!ENTITY zotero.__addonRef__.pref.removeRule.label "Remove Rule">
+<!ENTITY zotero.__addonRef__.pref.resetRule.label "Reset Rule!!">
 
 <!ENTITY zotero.__addonRef__.help.version.label "__addonName__ VERSION __buildVersion__">
 <!ENTITY zotero.__addonRef__.help.releasetime.label "Build __buildTime__">
