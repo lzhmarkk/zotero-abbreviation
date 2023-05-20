@@ -67,6 +67,8 @@ async function onStartup() {
 
   // PromptExampleFactory.registerAlertPromptExample();
 
+  await UIExampleFactory.initRules();
+
   await UIExampleFactory.registerPublishColumn();
 
   await UIExampleFactory.registerRightClickUpdateAbbreviation();

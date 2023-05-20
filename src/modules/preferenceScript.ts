@@ -8,17 +8,6 @@ export async function registerPrefsScripts(_window: Window) {
   if (!addon.data.prefs) {
     addon.data.prefs = {
       window: _window,
-      columns: [
-        {
-          dataKey: "full",
-          label: "prefs.table.full",
-        },
-        {
-          dataKey: "abbr",
-          label: "prefs.table.abbr",
-        },
-      ],
-      rows: await load_rules(),
       buffer: {}
     };
   } else {
@@ -39,7 +28,7 @@ async function updatePrefsUI() {
       id: `${config.addonRef}-prefs-table`,
       // Do not use setLocale, as it modifies the Zotero.Intl.strings
       // Set locales directly to columns
-      columns: addon.data.prefs?.columns.map((column) =>
+      columns: addon.data.rules?.columns.map((column) =>
         Object.assign(column, {
           label: getString(column.label) || column.label,
         })
@@ -49,11 +38,11 @@ async function updatePrefsUI() {
       staticColumns: true,
       disableFontSizeScaling: true,
     })
-    .setProp("getRowCount", () => addon.data.prefs?.rows.length || 0)
+    .setProp("getRowCount", () => addon.data.rules?.rows.length || 0)
     .setProp(
       "getRowData",
       (index) =>
-        addon.data.prefs?.rows[index] || {
+        addon.data.rules?.rows[index] || {
           full: "no data",
           abbr: "no data",
         }
@@ -86,7 +75,7 @@ async function updatePrefsUI() {
     // For find-as-you-type
     .setProp(
       "getRowString",
-      (index) => addon.data.prefs?.rows[index].abbr || ""
+      (index) => addon.data.rules?.rows[index].abbr || ""
     )
     // Render the table.
     .render(-1, () => {

@@ -14,11 +14,13 @@ class Addon {
     };
     prefs?: {
       window: Window;
-      columns: Array<ColumnOptions>;
-      rows: Array<{ [dataKey: string]: string }>;
       buffer: {[key: string]: string};
       table?: VirtualizedTableHelper
     };
+    rules?: {
+      columns: Array<ColumnOptions>;
+      rows: Array<{ [dataKey: string]: string }>;
+    }
   };
   // Lifecycle hooks
   public hooks: typeof hooks;

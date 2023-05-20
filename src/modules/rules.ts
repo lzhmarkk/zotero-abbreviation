@@ -12,7 +12,7 @@ export async function load_rules() {
 export function add_rule(rule: { [dataKey: string]: string; }) {
     //todo duplicate check
     ztoolkit.log("add rules")
-    let rules = addon.data.prefs!.rows;
+    let rules = addon.data.rules!.rows;
     rules.push(rule);
     Zotero.Prefs.set("zoteroabbr.rules", JSON.stringify(rules));
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
@@ -20,7 +20,7 @@ export function add_rule(rule: { [dataKey: string]: string; }) {
 
 export function del_rule(rules: { [dataKey: string]: string; }[]) {
     ztoolkit.log("remove rules")
-    addon.data.prefs!.rows = rules;
+    addon.data.rules!.rows = rules;
     Zotero.Prefs.set("zoteroabbr.rules", JSON.stringify(rules));
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
 }
@@ -28,7 +28,7 @@ export function del_rule(rules: { [dataKey: string]: string; }[]) {
 export async function reset_rules() {
     ztoolkit.log("reset rules to defaults from file")
     const default_rules = await default_rules_list()
-    addon.data.prefs!.rows = default_rules;
+    addon.data.rules!.rows = default_rules;
     Zotero.Prefs.set("zoteroabbr.rules", JSON.stringify(default_rules))
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
 }

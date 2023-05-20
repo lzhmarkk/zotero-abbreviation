@@ -1,5 +1,6 @@
 import {config} from "../../package.json";
 import {getString} from "./locale";
+import {load_rules} from "./rules";
 
 
 export class UIExampleFactory {
@@ -50,6 +51,24 @@ export class UIExampleFactory {
             defaultXUL: true,
         };
         ztoolkit.PreferencePane.register(prefOptions);
+    }
+
+    static async initRules() {
+        if (!addon.data.rules) {
+            addon.data.rules = {
+                columns: [
+                    {
+                        dataKey: "full",
+                        label: "prefs.table.full",
+                    },
+                    {
+                        dataKey: "abbr",
+                        label: "prefs.table.abbr",
+                    },
+                ],
+                rows: await load_rules()
+            }
+        }
     }
 }
 
