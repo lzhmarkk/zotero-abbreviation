@@ -98,11 +98,35 @@ function update_publish_abbreviation(
     }
 }
 
-function get_publish_abbreviation(full_name: String) {
-    const rules = addon.data.prefs?.rows
-    const _abb = rules?.filter((t) => full_name.toLowerCase().includes(t.full.toLowerCase()))
-    if (!!_abb && _abb.length > 0) {
-        return String(_abb[0].abbr)
+function get_publish_abbreviation(full_name: string) {
+    // ignore some words
+    const ignore_words = ['ACM', 'IEEE', 'Annual', 'CCF', 'of', 'on', 'for', 'and','\/']
+
+    const removePatternsFromString = (S: string, patterns: string[]): string => {
+        const regex = new RegExp(patterns.join('|').toLowerCase(), 'gi');
+        return S.replace(regex, ' ');
+    }
+    const matchKeyWords = (S: string, words: string[]): boolean => words.every(w => S.toLowerCase().includes(w))
+
+    const matchRow = (S: string, row: any): boolean => {
+        if (!row.abbr) {
+            return false;
+        }
+        if (row.words) {
+            return matchKeyWords(full_name, row.words)
+        } else {
+            const words = removePatternsFromString(row.full.toLowerCase(), ignore_words).split(' ')
+            row.words = words
+            //todo test words cache
+            return matchKeyWords(full_name, words)
+        }
+    }
+
+    const rules = addon.data.rules?.rows!
+    const matched = rules?.filter(row => matchRow(full_name, row))
+    if (matched && matched.length > 0) {
+        // todo user select manually if matched.length>0
+        return String(matched[0].abbr)
     } else {
         return String("")
     }
