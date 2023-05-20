@@ -63,10 +63,7 @@ async function updatePrefsUI() {
     // Returning false to prevent default event.
     .setProp("onKeyDown", (event: KeyboardEvent) => {
       if (event.key == "Delete" || (Zotero.isMac && event.key == "Backspace")) {
-        addon.data.prefs!.rows =
-          addon.data.prefs?.rows.filter(
-            (v, i) => !tableHelper.treeInstance.selection.isSelected(i)
-          ) || [];
+        del_rule(tableHelper);
         tableHelper.render();
         return false;
       }
@@ -112,24 +109,17 @@ function bindPrefEvents() {
 
     addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-removeRule`)
         ?.addEventListener("click", (e) => {
-            const table = addon.data.prefs!.table;
-            if(!!table) {
-                 const rules=addon.data.prefs?.rows.filter(
-                        (v, i) => !table.treeInstance.selection.isSelected(i)
-                    ) || [];
-                 del_rule(rules);
-                table.render();
-            }
+            const table = addon.data.prefs!.table!;
+            del_rule(table);
+            table.render();
             return false;
         });
 
     addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-resetRule`)
         ?.addEventListener("click", (e) => {
-            const table = addon.data.prefs!.table;
-            if(!!table){
-                reset_rules();
-                table.render();
-            }
+            const table = addon.data.prefs!.table!;
+            reset_rules();
+            table.render();
             return false;
         });
 }

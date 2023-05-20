@@ -1,3 +1,5 @@
+import {VirtualizedTableHelper} from "zotero-plugin-toolkit/dist/helpers/virtualizedTable";
+
 export async function load_rules() {
     ztoolkit.log("load rules")
     // Set default if not set.
@@ -18,8 +20,13 @@ export function add_rule(rule: { [dataKey: string]: string; }) {
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
 }
 
-export function del_rule(rules: { [dataKey: string]: string; }[]) {
+export function del_rule(table: VirtualizedTableHelper) {
     ztoolkit.log("remove rules")
+
+    const rules = addon.data.rules?.rows.filter(
+        (v, i) => !table.treeInstance.selection.isSelected(i)
+    ) || [];
+
     addon.data.rules!.rows = rules;
     Zotero.Prefs.set("zoteroabbr.rules", JSON.stringify(rules));
     return JSON.parse(<string>Zotero.Prefs.get("zoteroabbr.rules"));
