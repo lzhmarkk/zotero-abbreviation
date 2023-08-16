@@ -13,7 +13,8 @@ export async function registerPrefsScripts(_window: Window) {
   } else {
     addon.data.prefs.window = _window;
   }
-  updatePrefsUI();
+    clear_input_box();
+    updatePrefsUI();
   bindPrefEvents();
 }
 
@@ -86,10 +87,9 @@ async function updatePrefsUI() {
 function bindPrefEvents() {
     addon.data.prefs!!.window.document.querySelector(`#zotero-prefpane-${config.addonRef}-addRule`)
       ?.addEventListener("click", (e) => {
-        const fullInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
-        const abbrInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
-        const full = fullInput.value;
-        const abbr = abbrInput.value;
+        const input = get_input_box();
+        const full = input[0];
+        const abbr = input[1];
 
         if(!full||!abbr){
             addon.data.prefs!.window.alert(getString("prefs.table.warn"));
@@ -101,8 +101,7 @@ function bindPrefEvents() {
                 abbr: abbr
             };
         add_rule(rule);
-          fullInput.value = "";
-          abbrInput.value = "";
+          clear_input_box();
           addon.data.prefs!.table?.render();
           return false;
       });
@@ -111,6 +110,7 @@ function bindPrefEvents() {
         ?.addEventListener("click", (e) => {
             const table = addon.data.prefs!.table!;
             del_rule(table);
+            clear_input_box();
             table.render();
             return false;
         });
@@ -119,7 +119,23 @@ function bindPrefEvents() {
         ?.addEventListener("click", (e) => {
             const table = addon.data.prefs!.table!;
             reset_rules();
+            clear_input_box();
             table.render();
             return false;
         });
+}
+
+function get_input_box(){
+    const fullInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
+    const abbrInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
+    const full = fullInput.value;
+    const abbr = abbrInput.value;
+    return [full, abbr];
+}
+
+function clear_input_box(){
+    const fullInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-full");
+    const abbrInput = <HTMLInputElement>addon.data.prefs!!.window.document.getElementById("zotero-prefpane-ZoteroAbbrev-abbr");
+    fullInput.value="";
+    abbrInput.value="";
 }
