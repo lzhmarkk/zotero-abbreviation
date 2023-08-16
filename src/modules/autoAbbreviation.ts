@@ -41,6 +41,7 @@ export class UIExampleFactory {
             }
         );
     }
+
     static registerPrefs() {
         const prefOptions = {
             pluginID: config.addonID,
@@ -100,7 +101,7 @@ function update_publish_abbreviation(
 
 function get_publish_abbreviation(full_name: string) {
     // ignore some words
-    const ignore_words = ['ACM', 'IEEE', 'Annual', 'CCF', 'of', 'on', 'for', 'and','\/']
+    const ignore_words = ['ACM', 'IEEE', 'Annual', 'CCF', 'of', 'on', 'for', 'and', '\/']
 
     const removePatternsFromString = (S: string, patterns: string[]): string => {
         const regex = new RegExp(patterns.join('|').toLowerCase(), 'gi');
@@ -124,9 +125,14 @@ function get_publish_abbreviation(full_name: string) {
 
     const rules = addon.data.rules?.rows!
     const matched = rules?.filter(row => matchRow(full_name, row))
+    const reg_match = (/\((.*?)\)/g).exec(full_name);
     if (matched && matched.length > 0) {
         // todo user select manually if matched.length>0
         return String(matched[0].abbr)
+    } else if (reg_match) {
+        // spacial cases if the full name contains its abbr itself
+        // e.g. "IEEE International Conference of Auto Abbreviation (ICAA)" -> ICAA
+        return String(reg_match[1]);
     } else {
         return String("")
     }
